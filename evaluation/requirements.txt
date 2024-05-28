@@ -1,5 +1,0 @@
-tensorflow
-scipy
-requests
-tqdm
-pyyaml
