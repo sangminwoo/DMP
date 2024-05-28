@@ -1,48 +1,131 @@
-# Academic Project Page Template
-This is an academic paper project page template.
+# Denoising Model Patching via Mixture-of-Prompts
+<!-- Arxiv Link, Project Link -->
+<a href="https://arxiv.org/abs/2310.07138"><img src="https://img.shields.io/badge/arXiv-2310.07138-b31b1b.svg"></a>
+<a href="https://sangminwoo.github.io/DMP/"><img src="https://img.shields.io/badge/Project%20Page-online-brightgreen"></a>
+
+This repository contains the official pytorch implementation of the paper: "Denoising Model Patching via Mixture-of-Prompts".
 
 
-Example project pages built using this template are:
-- https://vision.huji.ac.il/spectral_detuning/
-- https://vision.huji.ac.il/podd/
-- https://dreamix-video-editing.github.io
-- https://vision.huji.ac.il/conffusion/
-- https://vision.huji.ac.il/3d_ads/
-- https://vision.huji.ac.il/ssrl_ad/
-- https://vision.huji.ac.il/deepsim/
+<!-- Please Insert generated Images. -->
+<img src="assets/DTR.png" width="50%" alt="DTR">
+
+**DTR** creates different pathways for each denoising task (step).
+
+**DTR** is:
+
+💡 **Simple yet Effective** (Performance gain is significant!)
+
+💡 **Boosts convergence speed**
+
+💡 **No additional parameters**
+
+💡 **Plug-and-Play** (Easily integrates into any diffusion architecture)
+
+💡 **Minimal Code** (Implemented with just 10+ lines of code)
+
+----------------
+
+![Golden Retriever](assets/golden_retriever.png)
+
+Generated sample (*golden retriever*) from **256x256 DiT-L/2 + DTR (w/ cfg=2.0)**.
+
+----------------
 
 
+## Updates
 
-## Start using the template
-To start using the template click on `Use this Template`.
+ * **2023.12.26**: Initial Release.
 
-The template uses html for controlling the content and css for controlling the style. 
-To edit the websites contents edit the `index.html` file. It contains different HTML "building blocks", use whichever ones you need and comment out the rest.  
+## Todo
+- [ ] Project Pages
 
-**IMPORTANT!** Make sure to replace the `favicon.ico` under `static/images/` with one of your own, otherwise your favicon is going to be a dreambooth image of me.
+[//]: # (- [ ] Linking Addressing Negative Transfer Project Pages.)
+[//]: # (- [ ] Generated Images.)
+[//]: # (- [ ] Loss weighting check.)
+[//]: # (- [ ] Code Cleaning.)
+[//]: # (- [ ] Task Mask initialization test. )
 
-## Components
-- Teaser video
-- Images Carousel
-- Youtube embedding
-- Video Carousel
-- PDF Poster
-- Bibtex citation
 
-## Tips:
-- The `index.html` file contains comments instructing you what to replace, you should follow these comments.
-- The `meta` tags in the `index.html` file are used to provide metadata about your paper 
-(e.g. helping search engine index the website, showing a preview image when sharing the website, etc.)
-- The resolution of images and videos can usually be around 1920-2048, there rarely a need for better resolution that take longer to load. 
-- All the images and videos you use should be compressed to allow for fast loading of the website (and thus better indexing by search engines). For images, you can use [TinyPNG](https://tinypng.com), for videos you can need to find the tradeoff between size and quality.
-- When using large video files (larger than 10MB), it's better to use youtube for hosting the video as serving the video from the website can take time.
-- Using a tracker can help you analyze the traffic and see where users came from. [statcounter](https://statcounter.com) is a free, easy to use tracker that takes under 5 minutes to set up. 
-- This project page can also be made into a github pages website.
-- Replace the favicon to one of your choosing (the default one is of the Hebrew University). 
-- Suggestions, improvements and comments are welcome, simply open an issue or contact me. You can find my contact information at [https://pages.cs.huji.ac.il/eliahu-horwitz/](https://pages.cs.huji.ac.il/eliahu-horwitz/)
+## Setup
+<a href="https://pytorch.org/get-started/locally/"><img alt="PyTorch" src="https://img.shields.io/badge/PyTorch-ee4c2c?logo=pytorch&logoColor=white"></a>
+<a href="https://hydra.cc/"><img alt="Config: Hydra" src="https://img.shields.io/badge/Config-Hydra-89b8cd"></a>
+
+We use 8 80GB A100 GPUs for all experiments. 
+```
+conda create -n ENV_NAME python=3.10
+```
+```
+python3 -m pip install -r requirements.txt
+```
+
+## Training DiT with DTR
+
+We provide an example training script for ImageNet.
+ 
+```
+torchrun --nnodes=1 --nproc_per_node=8 train.py general.data_path='<PATH_TO_DATASET>'
+```
+
+You can also modify the DiT model, optimization type, sharing ratio, etc.
+
+```
+torchrun --nnodes=1 --nproc_per_node=8 train.py \
+general.data_path='<PATH_TO_DATASET>' \
+general.loss_weight_type="uw" \
+models.name="DiT-L/2" \
+models.routing.sharing_ratio=0.8
+```
+
+## Sampling DiT with DTR
+After training, the checkpoint and log files are saved based on the configuration.
+Consequently, you need to execute the sampling script using the same configuration as the training script. 
+Additionally, you can adjust the number of sampling images and the classifier-guidance scale.
+
+```
+torchrun --nnodes=1 --nproc_per_node=8 sample_ddp.py \
+general.loss_weight_type="uw \
+models.name="DiT-L/2" \
+models.routing.sharing_ratio=0.8 \
+eval.cfg_scale=1.5 \
+eval.num_fid_samples=50000
+```
+
+Please refer to the [example scripts](https://github.com/byeongjun-park/DTR/tree/main/example_script.sh) for detailed instructions how to reproduce our results.
+In this script, we enumerate the configurations that can be modified if needed.
+
+## Results
+
+With DiT-L/2, our DTR is compatible with MTL optimization techniques specifically designed for diffusion models.
+
+
+**Quantitative Results (guidance scale = 1.5)**
+
+| Optimization (+ DTR) | FID-50K  | Inception Score | Precision |  Recall  |
+|:---------------------|:--------:|:---------------:|:---------:|:--------:|
+| Vanilla              |  12.59   |     134.60      |   0.73    |   0.49   |
+| Vanilla + DTR        |   8.90   |     156.48      |   0.77    | **0.51** |
+| Min-SNR              |   9.58   |     179.98      |   0.78    |   0.47   |
+| Min-SNR + DTR        |   8.24   |     186.02      |   0.79    |   0.50   |
+| ANT-UW               |   5.85   |     206.68      | **0.84**  |   0.46   |
+| ANT-UW + DTR         | **4.61** |   **208.76**    | **0.84**  |   0.48   |
+
+
+**Results w.r.t. guidance scale**
+
+
+![result](assets/result_metric.png)
+
+
+## BibTeX
+
+```bibtex
+@article{park2023denoising,
+  title={Denoising Task Routing for Diffusion Models},
+  author={Park, Byeongjun and Woo, Sangmin and Go, Hyojun and Kim, Jin-Young and Kim, Changick},
+  journal={arXiv preprint arXiv:2310.07138},
+  year={2023}
+}
+```
 
 ## Acknowledgments
-Parts of this project page were adopted from the [Nerfies](https://nerfies.github.io/) page.
-
-## Website License
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+This codebase borrows from most notably [DIT](https://github.com/facebookresearch/DiT) and [ANT](https://github.com/gohyojun15/ANT_diffusion).
