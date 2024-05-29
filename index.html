@@ -85,7 +85,7 @@
             <div class="publication-links">
               <!-- Arxiv PDF link -->
               <span class="link-block">
-                <a href="https://arxiv.org/pdf/<ARXIV PAPER ID>.pdf" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                <a href="https://arxiv.org/pdf/2405.17825.pdf" target="_blank" class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                     <i class="fas fa-file-pdf"></i>
                   </span>
@@ -105,7 +105,7 @@
 
               <!-- ArXiv abstract Link -->
               <span class="link-block">
-                <a href="https://arxiv.org/abs/<ARXIV PAPER ID>" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                <a href="https://arxiv.org/abs/2405.17825" target="_blank" class="external-link button is-normal is-rounded is-dark">
                 <span class="icon">
                   <i class="ai ai-arxiv"></i>
                 </span>
@@ -140,12 +140,12 @@
 
 <!-- Teaser image-->
 <section class="hero teaser">
-  <div class="container is-max-desktop">
+  <div class="container">
     <div class="hero-body">
       <div id="results-carousel" class="carousel results-carousel">
         <img src="static/images/overview.png" alt="Overview"/>
         <h2 class="subtitle has-text-centered">
-          We take inspiration from prompt tuning and aim to enhance already converged diffusion models. Our approach incorporates a pool of prompts within the input space, with each prompt learned to excel at certain stages of the denoising process. This is similar to giving a skilled artist an expanded color palette to refine different aspects of their artwork. At every step, a unique blend of prompts (i.e., mixture-of-prompts) is constructed via dynamic gating based on the current noise level. This mechanism is akin to an artist choosing the appropriate color combinations for specific moments. Importantly, our method keeps the diffusion model itself unchanged, and we only use the original training dataset for further training.
+We take inspiration from prompt tuning and aim to enhance already converged diffusion models. Our approach incorporates a pool of prompts within the input space, with each prompt learned to excel at certain stages of the denoising process. This is similar to giving a skilled artist an expanded color palette to refine different aspects of their artwork. At every step, a unique blend of prompts (i.e., mixture-of-prompts) is constructed via dynamic gating based on the current noise level. This mechanism is akin to an artist choosing the appropriate color combinations for specific moments. Importantly, our method keeps the diffusion model itself unchanged, and we only use the original training dataset for further training.
         </h2>
       </div>
     </div>
@@ -180,12 +180,12 @@
       <div id="results-carousel" class="carousel results-carousel">
         <img src="static/images/main_table.png" alt="Main Table"/>
         <h2 class="subtitle has-text-centered">
-          Patching the pre-trained DiT models with DMP.
-          We set two baselines for comparison:
-          (1) conventional fine-tuning to update the model parameters.
-          (2) naive prompt tuning.
-          Note that we use the same dataset as in the pre-training.
-          Image Resolution is 256$\times$256.
+Patching the pre-trained DiT models with DMP.
+We set two baselines for comparison:
+(1) conventional fine-tuning to update the model parameters.
+(2) naive prompt tuning.
+Note that we use the same dataset as in the pre-training.
+Image Resolution is 256 X 256.
         </h2>
       </div>
     </div>
@@ -200,8 +200,8 @@
       <div id="results-carousel" class="carousel results-carousel">
         <img src="static/images/further_training.png" alt="Further Training"/>
         <h2 class="subtitle has-text-centered">
-          (Left) Further training of fully converged DiT-L/2. DMP achieves a 10.38% gain in FID-50K with only 50K iterations, while others overfit.
-          (Right) Number of parameters. Default image size is 256x256.
+(Left) Further training of fully converged DiT-L/2. DMP achieves a 10.38% gain in FID-50K with only 50K iterations, while others overfit.
+(Right) Number of parameters. Default image size is 256x256.
         </h2>
       </div>
     </div>
@@ -219,36 +219,36 @@
           <!-- Your image here -->
           <img src="static/images/output_image_golden_retriever.png" alt="Golden Retriever"/>
           <h2 class="subtitle has-text-centered">
-            Uncurated 256×256 DiT-XL/2+DTR samples
-            Classifier-free guidance scale = 1.5
-            Class label = golden retriever (207)
+Uncurated 256×256 DiT-XL/2+DTR samples.
+Classifier-free guidance scale = 1.5.
+Class label = golden retriever (207)
           </h2>
         </div>
         <div class="item">
           <!-- Your image here -->
           <img src="static/images/output_image_goldfish.png" alt="Goldfish"/>
           <h2 class="subtitle has-text-centered">
-            Uncurated 256×256 DiT-XL/2+DTR samples
-            Classifier-free guidance scale = 1.5
-            Class label = goldfish (1)
+Uncurated 256×256 DiT-XL/2+DTR samples.
+Classifier-free guidance scale = 1.5.
+Class label = goldfish (1)
           </h2>
         </div>
         <div class="item">
           <!-- Your image here -->
           <img src="static/images/output_image_hummingbird.png" alt="Hummingbird"/>
           <h2 class="subtitle has-text-centered">
-            Uncurated 256×256 DiT-XL/2+DTR samples
-            Classifier-free guidance scale = 1.5
-            Class label = hummingbird (94)
+Uncurated 256×256 DiT-XL/2+DTR samples.
+Classifier-free guidance scale = 1.5.
+Class label = hummingbird (94)
           </h2>
         </div>
         <div class="item">
           <!-- Your image here -->
           <img src="static/images/output_image_ostrich.png" alt="Ostrich"/>
           <h2 class="subtitle has-text-centered">
-            Uncurated 256×256 DiT-XL/2+DTR samples
-            Classifier-free guidance scale = 1.5
-            Class label = “ostrich” (9)
+Uncurated 256×256 DiT-XL/2+DTR samples.
+Classifier-free guidance scale = 1.5.
+Class label = “ostrich” (9)
           </h2>
         </div>
       </div>
@@ -350,8 +350,8 @@
     <div class="column is-8">
       <div class="content">
         <p>
-          This page was adapted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page, licensed under a <a rel="license"  href="http://  creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
-          Commons Attribution-ShareAlike 4.0 International License</a>.
+          This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a> which was adopted from the <a href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+          This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
         </p>
       </div>
     </div>
