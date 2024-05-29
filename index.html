@@ -175,10 +175,10 @@
 <section class="hero is-small">
   <div class="container">
     <div class="columns is-centered has-text-centered">
-      <div class="column is-offset-half">
+      <div class="column is-four-fifths">
       <h2 class="title is-2">Diffusion Model Patching (DMP)</h2>
         <div class="hero-body">
-          <img src="static/images/dmp.png" alt="Diffusion Model Patching"/>
+          <img src="static/images/dmp.png" alt="Diffusion Model Patching" style="width: 60%;"/>
           <h2 class="subtitle has-text-centered">
           DMP framework with DiT.
           DMP reuses the original dataset used to pre-train DiT.
@@ -236,43 +236,41 @@
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container">
-    <h2 class="title is-2">ImageNet Results</h2>
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item">
-          <!-- Your image here -->
-          <img src="static/images/output_image_golden_retriever.png" alt="Golden Retriever"/>
-          <h2 class="subtitle has-text-centered">
-          Uncurated 256×256 DiT-XL/2+DTR samples.
-          Classifier-free guidance scale = 1.5.
-          Class label = golden retriever (207)
-          </h2>
-        </div>
-        <div class="item">
-          <!-- Your image here -->
-          <img src="static/images/output_image_goldfish.png" alt="Goldfish"/>
-          <h2 class="subtitle has-text-centered">
-          Uncurated 256×256 DiT-XL/2+DTR samples.
-          Classifier-free guidance scale = 1.5.
-          Class label = goldfish (1)
-          </h2>
-        </div>
-        <div class="item">
-          <!-- Your image here -->
-          <img src="static/images/output_image_hummingbird.png" alt="Hummingbird"/>
-          <h2 class="subtitle has-text-centered">
-          Uncurated 256×256 DiT-XL/2+DTR samples.
-          Classifier-free guidance scale = 1.5.
-          Class label = hummingbird (94)
-          </h2>
-        </div>
-        <div class="item">
-          <!-- Your image here -->
-          <img src="static/images/output_image_ostrich.png" alt="Ostrich"/>
-          <h2 class="subtitle has-text-centered">
-          Uncurated 256×256 DiT-XL/2+DTR samples.
-          Classifier-free guidance scale = 1.5.
-          Class label = “ostrich” (9)
-          </h2>
+      <div class="columns is-centered">
+      <h2 class="title is-2">ImageNet Results</h2>
+        <div id="results-carousel" class="carousel results-carousel">
+          <div class="item">
+            <img src="static/images/output_image_golden_retriever.png" alt="Golden Retriever"/>
+            <h2 class="subtitle has-text-centered">
+            Uncurated 256×256 DiT-XL/2+DMP samples.
+            Classifier-free guidance scale = 1.5.
+            Class label = golden retriever (207)
+            </h2>
+          </div>
+          <div class="item">
+            <img src="static/images/output_image_goldfish.png" alt="Goldfish"/>
+            <h2 class="subtitle has-text-centered">
+            Uncurated 256×256 DiT-XL/2+DMP samples.
+            Classifier-free guidance scale = 1.5.
+            Class label = goldfish (1)
+            </h2>
+          </div>
+          <div class="item">
+            <img src="static/images/output_image_hummingbird.png" alt="Hummingbird"/>
+            <h2 class="subtitle has-text-centered">
+            Uncurated 256×256 DiT-XL/2+DMP samples.
+            Classifier-free guidance scale = 1.5.
+            Class label = hummingbird (94)
+            </h2>
+          </div>
+          <div class="item">
+            <img src="static/images/output_image_ostrich.png" alt="Ostrich"/>
+            <h2 class="subtitle has-text-centered">
+            Uncurated 256×256 DiT-XL/2+DMP samples.
+            Classifier-free guidance scale = 1.5.
+            Class label = “ostrich” (9)
+            </h2>
+          </div>
         </div>
       </div>
     </div>
