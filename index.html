@@ -52,14 +52,14 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">Diffusion Model Patching via Mixture-of-Prompts</h1>
+          <h1 class="title is-1 publication-title">Diffusion Model Patching via<br>Mixture-of-Prompts</h1>
           <div class="is-size-5 publication-authors">
             <!-- Paper authors -->
             <span class="author-block">
-              <b style="color:#00BFFF; font-weight:normal">Seokil Ham</b><sup>*</sup>,
+              <b style="color:#FF6347; font-weight:normal">Seokil Ham</b><sup>*</sup>,
             </span>
             <span class="author-block">
-              <a href="https://sangminwoo.github.io/" target="_blank"><b style="color:#00BFFF; font-weight:normal">Sangmin Woo</b></a><sup>*</sup>,
+              <a href="https://sangminwoo.github.io/" target="_blank"><b style="color:#FF6347; font-weight:normal">Sangmin Woo</b></a><sup>*</sup>,
             </span>
             <span class="author-block">
               <b style="color:#66CDAA; font-weight:normal">Jin-Young Kim</b>,
@@ -68,15 +68,15 @@
               <b style="color:#66CDAA; font-weight:normal">Hyojun Go</b>,
             </span>
             <span class="author-block">
-              <a href="https://byeongjun-park.github.io/" target="_blank"><b style="color:#00BFFF; font-weight:normal">Byeongjun Park</b></a>,
+              <a href="https://byeongjun-park.github.io/" target="_blank"><b style="color:#FF6347; font-weight:normal">Byeongjun Park</b></a>,
             </span>
             <span class="author-block">
-              <b style="color:#00BFFF; font-weight:normal">Changick Kim</b>
+              <b style="color:#FF6347; font-weight:normal">Changick Kim</b>
             </span>
           </div>
 
           <div class="is-size-5 publication-authors">
-            <span class="author-block"><b style="color:#00BFFF; font-weight:normal">&#x25B6 </b> KAIST</span>
+            <span class="author-block"><b style="color:#FF6347; font-weight:normal">&#x25B6 </b> KAIST</span>
             <span class="author-block"><b style="color:#66CDAA; font-weight:normal">&#x25B6 </b> Twleve Labs</span>
             <span class="eql-cntrb"><small><br><sup>*</sup>Indicates Equal Contribution</small></span>
           </div>
@@ -95,7 +95,7 @@
 
               <!-- Github link -->
               <span class="link-block">
-                <a href="https://github.com/Diffusion-Model-Patching" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                <a href="https://github.com/DMP" target="_blank" class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                     <i class="fab fa-github"></i>
                   </span>
@@ -121,12 +121,12 @@
 </section>
 
 
+
 <!-- Teaser video-->
-<section class="hero teaser">
+<!-- <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
       <video poster="" id="tree" autoplay controls muted loop height="100%">
-        <!-- Your video here -->
         <source src="static/videos/banner_video.mp4"
         type="video/mp4">
       </video>
@@ -135,8 +135,25 @@
       </h2>
     </div>
   </div>
-</section>
+</section> -->
 <!-- End teaser video -->
+
+<!-- Teaser image-->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <div id="results-carousel" class="carousel results-carousel">
+        <img src="static/images/overview.png" alt="Overview"/>
+        <h2 class="subtitle has-text-centered">
+          We take inspiration from prompt tuning and aim to enhance already converged diffusion models. Our approach incorporates a pool of prompts within the input space, with each prompt learned to excel at certain stages of the denoising process. This is similar to giving a skilled artist an expanded color palette to refine different aspects of their artwork. At every step, a unique blend of prompts (i.e., mixture-of-prompts) is constructed via dynamic gating based on the current noise level. This mechanism is akin to an artist choosing the appropriate color combinations for specific moments. Importantly, our method keeps the diffusion model itself unchanged, and we only use the original training dataset for further training.
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End teaser image -->
+
+
 
 <!-- Paper abstract -->
 <section class="section hero is-light">
@@ -156,45 +173,89 @@
 <!-- End paper abstract -->
 
 
+
+<section class="hero is-small">
+  <div class="container">
+    <div class="hero-body">
+      <div id="results-carousel" class="carousel results-carousel">
+        <img src="static/images/main_table.png" alt="Main Table"/>
+        <h2 class="subtitle has-text-centered">
+          Patching the pre-trained DiT models with DMP.
+          We set two baselines for comparison:
+          (1) conventional fine-tuning to update the model parameters.
+          (2) naive prompt tuning.
+          Note that we use the same dataset as in the pre-training.
+          Image Resolution is 256$\times$256.
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="hero is-small">
+  <div class="container">
+    <div class="hero-body">
+      <div id="results-carousel" class="carousel results-carousel">
+        <img src="static/images/further_training.png" alt="Further Training"/>
+        <h2 class="subtitle has-text-centered">
+          (Left) Further training of fully converged DiT-L/2. DMP achieves a 10.38% gain in FID-50K with only 50K iterations, while others overfit.
+          (Right) Number of parameters. Default image size is 256x256.
+        </h2>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
 <!-- Image carousel -->
 <section class="hero is-small">
   <div class="hero-body">
     <div class="container">
       <div id="results-carousel" class="carousel results-carousel">
-       <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel1.jpg" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-          First image description.
-        </h2>
+        <div class="item">
+          <!-- Your image here -->
+          <img src="static/images/output_image_golden_retriever.png" alt="Golden Retriever"/>
+          <h2 class="subtitle has-text-centered">
+            Uncurated 256×256 DiT-XL/2+DTR samples
+            Classifier-free guidance scale = 1.5
+            Class label = golden retriever (207)
+          </h2>
+        </div>
+        <div class="item">
+          <!-- Your image here -->
+          <img src="static/images/output_image_goldfish.png" alt="Goldfish"/>
+          <h2 class="subtitle has-text-centered">
+            Uncurated 256×256 DiT-XL/2+DTR samples
+            Classifier-free guidance scale = 1.5
+            Class label = goldfish (1)
+          </h2>
+        </div>
+        <div class="item">
+          <!-- Your image here -->
+          <img src="static/images/output_image_hummingbird.png" alt="Hummingbird"/>
+          <h2 class="subtitle has-text-centered">
+            Uncurated 256×256 DiT-XL/2+DTR samples
+            Classifier-free guidance scale = 1.5
+            Class label = hummingbird (94)
+          </h2>
+        </div>
+        <div class="item">
+          <!-- Your image here -->
+          <img src="static/images/output_image_ostrich.png" alt="Ostrich"/>
+          <h2 class="subtitle has-text-centered">
+            Uncurated 256×256 DiT-XL/2+DTR samples
+            Classifier-free guidance scale = 1.5
+            Class label = “ostrich” (9)
+          </h2>
+        </div>
       </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel2.jpg" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-          Second image description.
-        </h2>
-      </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel3.jpg" alt="MY ALT TEXT"/>
-        <h2 class="subtitle has-text-centered">
-         Third image description.
-       </h2>
-     </div>
-     <div class="item">
-      <!-- Your image here -->
-      <img src="static/images/carousel4.jpg" alt="MY ALT TEXT"/>
-      <h2 class="subtitle has-text-centered">
-        Fourth image description.
-      </h2>
     </div>
   </div>
-</div>
-</div>
 </section>
 <!-- End image carousel -->
-
 
 
 
@@ -215,6 +276,7 @@
   </div>
 </section> -->
 <!-- End youtube video -->
+
 
 
 <!-- Video carousel -->
@@ -249,9 +311,6 @@
 
 
 
-
-
-
 <!-- Paper poster -->
 <!-- <section class="hero is-small is-light">
   <div class="hero-body">
@@ -265,16 +324,17 @@
 <!--End paper poster -->
 
 
+
 <!--BibTex citation -->
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
     <pre><code>
-@misc{woo2023harmonyview,
-      title={Diffusion Model Patching via Mixture-of-Prompts},
+@misc{ham2024diffusion,
+      title={Diffusion Model Patching via Mixture-of-Prompts}, 
       author={Seokil Ham and Sangmin Woo and Jin-Young Kim and Hyojun Go and Byeongjun Park and Changick Kim},
       year={2024},
-      eprint={2312.15980},
+      eprint={2405.17825},
       archivePrefix={arXiv},
       primaryClass={cs.CV}
 }
