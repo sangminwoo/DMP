@@ -6,27 +6,46 @@
 This repository contains the official pytorch implementation of the paper: "Diffusion Model Patching via Mixture-of-Prompts".
 
 
-<!-- Please Insert generated Images. -->
-<img src="assets/overview.png" width="100%" alt="Overview">
-Our approach incorporates a pool of prompts within the input space, with each prompt learned to excel at certain stages of the denoising process. This is similar to giving a skilled artist an expanded color palette to refine different aspects of their artwork. At every step, mixture-of-prompts is constructed via dynamic gating based on the current noise level. This mechanism is akin to an artist choosing the appropriate color combinations for specific moments.
-
-
-<img src="assets/dmp.png" width="50%" alt="Diffusion Model Patching">
-Diffusion Model Patching (DMP) is a simple method to boost the performance of pre-trained diffusion models that have already reached convergence, with a negligible increase in parameters.
-
-----------------
-
-![Golden Retriever](assets/output_image_golden_retriever.png)
-
-Generated sample (*golden retriever*) from **256x256 DiT-L/2 + DMP (w/ cfg=1.5)**.
-
-----------------
-
-
 ## Updates
 
  * **2024.05.29**: Build project page.
  * **2024.05.28**: Code Release.
+
+
+## Overview
+
+<!-- Please Insert generated Images. -->
+<p align="center" width="100%">
+<img src="assets/overview.png" width="100%" alt="Overview">
+</p>
+Our approach incorporates a pool of prompts within the input space, with each prompt learned to excel at certain stages of the denoising process. This is similar to giving a skilled artist an expanded color palette to refine different aspects of their artwork. At every step, mixture-of-prompts is constructed via dynamic gating based on the current noise level. This mechanism is akin to an artist choosing the appropriate color combinations for specific moments.
+
+
+## Method: Diffusion Model Patching (DMP)
+
+<p align="center" width="100%">
+<img src="assets/dmp.png" width="50%" alt="Diffusion Model Patching">
+</p>
+Diffusion Model Patching (DMP) is a simple method to boost the performance of pre-trained diffusion models that have already reached convergence, with a negligible increase in parameters.
+
+
+## ImageNet 256x256 Results
+
+![Golden Retriever](assets/output_image_golden_retriever.png)
+
+Generated sample (*golden retriever*) from **DiT-XL/2 + DMP (w/ cfg=1.5)**.
+
+![Golden Retriever](assets/output_image_goldfish.png)
+
+Generated sample (*goldfish*) from **DiT-XL/2 + DMP (w/ cfg=1.5)**.
+
+![Golden Retriever](assets/output_image_hummingbird.png)
+
+Generated sample (*hummingbird*) from **DiT-XL/2 + DMP (w/ cfg=1.5)**.
+
+![Golden Retriever](assets/output_image_ostrich.png)
+
+Generated sample (*ostrich*) from **DiT-XL/2 + DMP (w/ cfg=1.5)**.
 
 
 ## Setup
@@ -40,6 +59,7 @@ conda create -n ENV_NAME python=3.10
 ```
 python3 -m pip install -r requirements.txt
 ```
+
 
 ## Training DiT with DMP
 
