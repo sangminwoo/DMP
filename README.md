@@ -11,7 +11,7 @@ This repository contains the official pytorch implementation of the paper: "Diff
 Our approach incorporates a pool of prompts within the input space, with each prompt learned to excel at certain stages of the denoising process. This is similar to giving a skilled artist an expanded color palette to refine different aspects of their artwork. At every step, mixture-of-prompts is constructed via dynamic gating based on the current noise level. This mechanism is akin to an artist choosing the appropriate color combinations for specific moments.
 
 
-<img src="assets/DMP.png" width="50%" alt="Diffusion Model Patching">
+<img src="assets/dmp.png" width="50%" alt="Diffusion Model Patching">
 Diffusion Model Patching (DMP) is a simple method to boost the performance of pre-trained diffusion models that have already reached convergence, with a negligible increase in parameters.
 
 ----------------
