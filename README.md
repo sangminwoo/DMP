@@ -35,15 +35,15 @@ Diffusion Model Patching (DMP) is a simple method to boost the performance of pr
 
 Generated sample (*golden retriever*) from **DiT-XL/2 + DMP (w/ cfg=1.5)**.
 
-![Golden Retriever](assets/output_image_goldfish.png)
+![Goldfish](assets/output_image_goldfish.png)
 
 Generated sample (*goldfish*) from **DiT-XL/2 + DMP (w/ cfg=1.5)**.
 
-![Golden Retriever](assets/output_image_hummingbird.png)
+![Hummingbird](assets/output_image_hummingbird.png)
 
 Generated sample (*hummingbird*) from **DiT-XL/2 + DMP (w/ cfg=1.5)**.
 
-![Golden Retriever](assets/output_image_ostrich.png)
+![Ostrich](assets/output_image_ostrich.png)
 
 Generated sample (*ostrich*) from **DiT-XL/2 + DMP (w/ cfg=1.5)**.
 
