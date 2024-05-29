@@ -39,9 +39,9 @@ Generated sample (*golden retriever*) from **DiT-XL/2 + DMP (w/ cfg=1.5)**.
 
 Generated sample (*goldfish*) from **DiT-XL/2 + DMP (w/ cfg=1.5)**.
 
-![Hummingbird](assets/output_image_hummingbird.png)
+<!-- ![Hummingbird](assets/output_image_hummingbird.png)
 
-Generated sample (*hummingbird*) from **DiT-XL/2 + DMP (w/ cfg=1.5)**.
+Generated sample (*hummingbird*) from **DiT-XL/2 + DMP (w/ cfg=1.5)**. -->
 
 ![Ostrich](assets/output_image_ostrich.png)
 
