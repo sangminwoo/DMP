@@ -6,8 +6,8 @@
 This repository contains the official pytorch implementation of the paper: "Diffusion Model Patching via Mixture-of-Prompts".
 
 
-## Updates
-
+## Updates 
+ * **2024.08.19**: Resolve minor errors.
  * **2024.05.29**: Build project page.
  * **2024.05.28**: Code Release.
 
