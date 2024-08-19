@@ -95,7 +95,7 @@ In this script, we enumerate the configurations that can be modified if needed.
 
 
 ## Results
-<img src="assets/main_table.png" width="100%" alt="Results">
+<img src="assets/main_result.png" width="100%" alt="Results">
 Patching the pre-trained DiT models with DMP. We set two baselines for comparison: (1) conventional fine-tuning to update the model parameters. (2) naive prompt tuning. Note that we use the same dataset as in the pre-training. Image Resolution is 256 X 256.
 
 
