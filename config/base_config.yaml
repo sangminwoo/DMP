@@ -8,7 +8,7 @@ general:
   gpu_offset: 0
   mixed_precision: True
   image_size: 256
-  schedule_name: "cosine"
+  schedule_name: "linear"
   loss_weight_type: "constant" # "constant", "uw",
   vae: "ema" # "ema" or "mse"
   num_tokens: 256
@@ -16,7 +16,7 @@ general:
   type: "add"
   init_type: "zero" # "zero"
   gate_type: "linear" # "PT", "FT"
-  pt_depth: 28
+  pt_depth: 12
   gate_regul: True
 
 optim:
@@ -24,7 +24,7 @@ optim:
   weight_decay: 0.0
 
 defaults:
-  - data: ImageNet # FFHQ or ImageNet
+  - data: FFHQ # FFHQ or ImageNet
   - models: DiT
   - hydra/job_logging: disabled
   - hydra/hydra_logging: disabled
@@ -44,7 +44,7 @@ hydra:
 eval:
   samples_dir: samples/main/${data.name}/${general.schedule_name}_scheduling/${general.num_tokens}_tokens/${general.type}/${general.init_type}/${general.gate_type}_gate
   per_proc_batch_size: 25
-  num_fid_samples: 200
+  num_fid_samples: 50000
   cfg_scale: 1.5
   num_sampling_steps: 250
   ckpt_path:

@@ -80,7 +80,7 @@ def main(cfg: DictConfig):
     )  # e.g., DiT-XL/2 --> DiT-XL-2 (for naming folders)
     ckpt_path = f"{cfg.logs.results_dir}/{model_string_name}/{cfg.eval.ckpt_path.version:03d}/checkpoints/{cfg.eval.ckpt_path.iterations:07d}.pt"
     state_dict = find_model(ckpt_path)
-    model.load_state_dict(state_dict['model'], strict=True)
+    model.load_state_dict(state_dict['model'], strict=False)
     model.eval()  # important!
     diffusion = create_diffusion(
         str(cfg.eval.num_sampling_steps), noise_schedule=cfg.general.schedule_name
@@ -134,8 +134,8 @@ def main(cfg: DictConfig):
             # sample_fn = model.original_forward_with_cfg
         else:
             model_kwargs = dict(y=y)
-            sample_fn = model.forward
-            # sample_fn = model.original_forward
+            # sample_fn = model.forward
+            sample_fn = model.original_forward
 
         with torch.cuda.amp.autocast():
             # Sample images:
@@ -151,7 +151,7 @@ def main(cfg: DictConfig):
             )
             if not cfg.data.is_uncond:
                 samples, _ = samples.chunk(2, dim=0)  # Remove null class samples
-
+            model.class_analysis.append(samples)
             samples = vae.decode(samples / 0.18215).sample
         samples = (
             torch.clamp(127.5 * samples + 128.0, 0, 255)
@@ -159,7 +159,6 @@ def main(cfg: DictConfig):
             .to("cpu", dtype=torch.uint8)
             .numpy()
         )
-
         # Save samples to disk as individual .png files
         for i, sample in enumerate(samples):
             index = i * dist.get_world_size() + rank + total

@@ -13,9 +13,11 @@ import torch
 import torch.nn as nn
 import numpy as np
 import math
-from timm.models.vision_transformer import PatchEmbed, Attention, Mlp
+from timm.models.vision_transformer import PatchEmbed, Mlp
+from timm.layers import use_fused_attn
 from torch.distributions.normal import Normal
 import torch.nn.functional as F
+from torch.jit import Final
 import pdb
 
 def modulate(x, shift, scale):
@@ -95,6 +97,56 @@ class LabelEmbedder(nn.Module):
         return embeddings
 
 
+class Attention(nn.Module):
+    fused_attn: Final[bool]
+
+    def __init__(
+            self,
+            dim: int,
+            num_heads: int = 8,
+            qkv_bias: bool = False,
+            qk_norm: bool = False,
+            attn_drop: float = 0.,
+            proj_drop: float = 0.,
+            norm_layer: nn.Module = nn.LayerNorm,
+    ) -> None:
+        super().__init__()
+        assert dim % num_heads == 0, 'dim should be divisible by num_heads'
+        self.num_heads = num_heads
+        self.head_dim = dim // num_heads
+        self.scale = self.head_dim ** -0.5
+        self.fused_attn = use_fused_attn()
+
+        self.qkv = nn.Linear(dim, dim * 3, bias=qkv_bias)
+        self.q_norm = norm_layer(self.head_dim) if qk_norm else nn.Identity()
+        self.k_norm = norm_layer(self.head_dim) if qk_norm else nn.Identity()
+        self.attn_drop = nn.Dropout(attn_drop)
+        self.proj = nn.Linear(dim, dim)
+        self.proj_drop = nn.Dropout(proj_drop)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        B, N, C = x.shape
+        qkv = self.qkv(x).reshape(B, N, 3, self.num_heads, self.head_dim).permute(2, 0, 3, 1, 4)
+        q, k, v = qkv.unbind(0)
+        q, k = self.q_norm(q), self.k_norm(k)
+
+        if self.fused_attn:
+            x = F.scaled_dot_product_attention(
+                q, k, v,
+                dropout_p=self.attn_drop.p if self.training else 0.,
+            )
+        else:
+            q = q * self.scale
+            attn = q @ k.transpose(-2, -1)
+            attn = attn.softmax(dim=-1)
+            attn = self.attn_drop(attn)
+            x = attn @ v
+
+        x = x.transpose(1, 2).reshape(B, N, C)
+        x = self.proj(x)
+        x = self.proj_drop(x)
+        return x
+
 #################################################################################
 #                                 Core DiT Model                                #
 #################################################################################
@@ -142,29 +194,6 @@ class FinalLayer(nn.Module):
         x = self.linear(x)
         return x
 
-class Gate(nn.Module):
-    """
-    The gate function of DiT.
-    """
-    def __init__(self, hidden_size):
-        super().__init__()
-        self.w_q = nn.Linear(hidden_size, hidden_size, bias=False)
-        self.w_k = nn.Linear(hidden_size, hidden_size, bias=False)
-        self.w_v = nn.Linear(hidden_size, hidden_size, bias=False)
-        self.scale = hidden_size ** -0.5
-        # self.linear = nn.Linear(hidden_size, 1, bias=True)
-
-
-    def forward(self, vp , t):
-        query = self.w_q(vp) # (B, T, D)
-        key = self.w_k(t)    # (B, D)
-        value = self.w_v(t)  # (B, D)
-        qk = torch.bmm(query, key.unsqueeze(1).transpose(-1, -2)) * self.scale  # (B, T, 1)
-        x = torch.bmm(F.softmax(qk, dim=1), value.unsqueeze(1)) # (B, T, D)
-        x = F.softmax(x, dim=1)
-        return x
-
-
 class DiT(nn.Module):
     """
     Diffusion model with a Transformer backbone.
@@ -211,7 +240,6 @@ class DiT(nn.Module):
         # Mixture of Prompts
         self.num_tokens = num_tokens
         self.vp_type = vp_type
-        self.soft = soft
         self.topk = topk
         self.init_type = init_type
         self.pt_depth = pt_depth
@@ -219,6 +247,7 @@ class DiT(nn.Module):
         self.prompt_proj = nn.Identity()
         self.routing_mask = []
         self.load = []
+        self.class_analysis = []
         if gate_type != "FT":
             self.prompt_embeddings = nn.Parameter(torch.zeros(self.pt_depth, self.num_tokens, self.prompt_dim), requires_grad=True)
 

@@ -76,10 +76,9 @@ os.environ["HYDRA_FULL_ERROR"] = "1"
 #         p.requires_grad = flag
 
 
-def save_checkpoint(model, ema, opt, config, checkpoint_dir, train_steps, logger, uw):
+def save_checkpoint(model, opt, config, checkpoint_dir, train_steps, logger):
     checkpoint = {
         "model": model.module.state_dict(),
-        "ema": ema.state_dict(),
         "opt": opt.state_dict(),
         "config": config,
     }
@@ -218,20 +217,17 @@ def main(cfg: DictConfig):
             with torch.no_grad():
                 # Map input images to latent space + normalize latents:
                 x = vae_encode(x)
-            if cfg.general.loss_weight_type == "uw":
-                t = sample_t_batch(x.shape[0], clusters, device)
-            else:
                 t = torch.randint(0, diffusion.num_timesteps, (x.shape[0],), device=device)
 
             model_kwargs = dict(y=y)
-            loss_dict = diffusion.training_losses(model, x, t, uw, cfg.general.kl_lambda, model_kwargs)
+            loss_dict = diffusion.training_losses(model, x, t, model_kwargs)
             loss = loss_dict["loss"].mean()
 
         opt.zero_grad(set_to_none=True)
         scaler.scale(loss).backward()
         scaler.step(opt)
         scaler.update()
-        update_ema(ema, model.module)
+        # update_ema(ema, model.module)
         # scheduler.step()
 
         # Log loss values:
@@ -260,17 +256,8 @@ def main(cfg: DictConfig):
             )
             if dist.get_rank() == 0:
                 wandb.log(
-                    {"Train Loss": avg_loss, "KL Loss": avg_importance_loss, "Load Loss": avg_load_loss, "lr": opt.param_groups[0]['lr'], "Train Steps_per_Sec": steps_per_sec}, step=train_steps
+                    {"Train Loss": avg_loss, "Importance Loss": avg_importance_loss, "Load Loss": avg_load_loss, "lr": opt.param_groups[0]['lr'], "Train Steps_per_Sec": steps_per_sec}, step=train_steps
                 )
-                # wandb.log(
-                #     {"router_visual": wandb.Image(model.module.visualize)}, step=train_steps
-                # )
-                # wandb.log(
-                #     {"router_statistic": wandb.Table(data=model.module.logger.clone().detach().cpu().numpy(), columns=[f"token_idx_{i}" for i in range(20)])}, step=train_steps
-                # )
-
-            if cfg.general.loss_weight_type == "uw":
-                logger.info(f"uw_weight: {uw.module.get_loss_weight().tolist()}")
 
             # Reset monitoring variables:
             running_loss = 0
@@ -283,7 +270,7 @@ def main(cfg: DictConfig):
         if train_steps % cfg.logs.ckpt_every == 0:  # and train_steps > 0:
             if dist.get_rank() == 0:
                 logger.info("saving checkpoint")
-                save_checkpoint(model, ema, opt, cfg, checkpoint_dir, train_steps, logger, uw)
+                save_checkpoint(model, opt, cfg, checkpoint_dir, train_steps, logger)
             dist.barrier()
 
     model.eval()  # important! This disables randomized embedding dropout

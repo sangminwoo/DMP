@@ -49,8 +49,7 @@ class LossType(enum.Enum):
     RESCALED_MSE = enum.auto()  # use raw MSE loss (with RESCALED_KL when learning variances)
     KL = enum.auto()  # use the variational lower-bound
     RESCALED_KL = enum.auto()  # like KL, but rescale to estimate the full VLB
-    MSE_KL = enum.auto()
-    MSE_MSE = enum.auto()
+    MSE_gate = enum.auto()
 
     def is_vb(self):
         return self == LossType.KL or self == LossType.RESCALED_KL
@@ -525,6 +524,7 @@ class GaussianDiffusion:
                 )
                 yield out
                 img = out["sample"]
+        
 
     def ddim_sample(
         self,
@@ -671,14 +671,14 @@ class GaussianDiffusion:
             img = noise
         else:
             img = th.randn(*shape, device=device)
-        indices = list(range(self.num_timesteps))[::-1]
+        indices = list(range(self.num_timesteps))[::-5]
 
         if progress:
             # Lazy import so that we don't depend on tqdm.
             from tqdm.auto import tqdm
 
             indices = tqdm(indices)
-
+        
         for i in indices:
             t = th.tensor([i] * shape[0], device=device)
             with th.no_grad():
@@ -724,7 +724,7 @@ class GaussianDiffusion:
         output = th.where((t == 0), decoder_nll, kl)
         return {"output": output, "pred_xstart": out["pred_xstart"]}
 
-    def training_losses(self, model, x_start, t, uw=None, kl_lambda=0, model_kwargs=None, noise=None):
+    def training_losses(self, model, x_start, t, model_kwargs=None, noise=None):
         """
         Compute training losses for a single timestep.
         :param model: the model to evaluate loss on.
@@ -866,7 +866,6 @@ class GaussianDiffusion:
                 a `Scalar`.
                 """
                 eps = 1e-10
-                # if only num_experts = 1
 
                 if x.shape[0] == 1:
                     return th.tensor([0], device=x.device, dtype=x.dtype)
@@ -876,27 +875,17 @@ class GaussianDiffusion:
             load = th.stack(model.model.module.load, dim=0).float().mean(dim=0)
             importance = gates.sum(0)
             terms["importance"] = cv_squared(importance)
-            terms["load"] = load
+            terms["load"] = load.sum()
 
             terms["mse"] = mse_loss_weight * mean_flat((target - model_output) ** 2)
 
             if "vb" in terms:
                 terms["loss"] = terms["mse"] + terms["vb"] + terms["importance"] + terms["load"]
             else:
-                terms["loss"] = terms["mse"] + terms["importance"] + terms["load"] 
+                terms["loss"] = terms["mse"] + terms["importance"] + terms["load"]
         else:
             raise NotImplementedError(self.loss_type)
 
-        if self.mse_loss_weight_type == "uw":
-            avg_loss = 0
-            for task_ind in range(8):
-                ind_left, ind_right = int(t.shape[0] / 8 * task_ind), int(
-                    t.shape[0] / 8 * (task_ind + 1)
-                )
-                l = terms["loss"][ind_left:ind_right].mean() / 8
-                uw_loss = uw(l, task_ind)
-                avg_loss += uw_loss
-            terms["loss"] = avg_loss
         return terms
 
     def _prior_bpd(self, x_start):

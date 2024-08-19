@@ -1,5 +1,5 @@
 # @package _group_
-name: "DiT-XL/2"
+name: "DiT-B/2"
 param:
   num_classes: ${data.num_classes}
   latent_size: null # To be filled in running code.
@@ -7,8 +7,8 @@ vp:
   num_tokens: 256
   topk: 1.0
   type: "add" # add # prepend
-  uncond: False
+  uncond: True
   init_type: "zero" # "zero", "random"
   gate_type: "linear" # "linear", "FT", "PT"
-  pt_depth: 28
+  pt_depth: 12
 
