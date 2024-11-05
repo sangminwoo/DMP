@@ -134,8 +134,8 @@ def main(cfg: DictConfig):
             # sample_fn = model.original_forward_with_cfg
         else:
             model_kwargs = dict(y=y)
-            # sample_fn = model.forward
-            sample_fn = model.original_forward
+            sample_fn = model.forward
+            # sample_fn = model.original_forward
 
         with torch.cuda.amp.autocast():
             # Sample images:
