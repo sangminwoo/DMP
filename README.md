@@ -7,6 +7,7 @@ This repository contains the official pytorch implementation of the paper: "Diff
 
 
 ## Updates 
+ * **2024.12.10**: DMP is accepted to AAAI 2025!
  * **2024.08.19**: Resolve minor errors.
  * **2024.05.29**: Build project page.
  * **2024.05.28**: Code Release.
@@ -96,7 +97,7 @@ In this script, we enumerate the configurations that can be modified if needed.
 
 ## Results
 <img src="assets/main_result.png" width="100%" alt="Results">
-Patching the pre-trained DiT models with DMP. We set two baselines for comparison: (1) conventional fine-tuning to update the model parameters. (2) naive prompt tuning. Note that we use the same dataset as in the pre-training.
+Evaluating pre-trained diffusion models with different further training methods. Importantly, we use the same dataset as in the pre-training for further training. We set two baselines for comparison: (1) full fine-tuning to update the entire model parameters. (2) naive prompt tuning.
 
 
 
