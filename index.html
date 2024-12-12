@@ -56,7 +56,7 @@
           <div class="is-size-5 publication-authors">
             <!-- Paper authors -->
             <span class="author-block">
-              <b style="color:#FF6347; font-weight:normal">Seokil Ham</b><sup>*</sup>,
+              <a href="https://cilabs.kaist.ac.kr/members/ph-d/seokil-ham" target="_blank"><b style="color:#FF6347; font-weight:normal">Seokil Ham</b></a><sup>*</sup>,
             </span>
             <span class="author-block">
               <a href="https://sangminwoo.github.io/" target="_blank"><b style="color:#FF6347; font-weight:normal">Sangmin Woo</b></a><sup>*</sup>,
@@ -65,7 +65,7 @@
               <b style="color:#66CDAA; font-weight:normal">Jin-Young Kim</b>,
             </span>
             <span class="author-block">
-              <b style="color:#66CDAA; font-weight:normal">Hyojun Go</b>,
+              <a href="https://gohyojun15.github.io/" target="_blank"><b style="color:#66CDAA; font-weight:normal">Hyojun Go</b></a>,
             </span>
             <span class="author-block">
               <a href="https://byeongjun-park.github.io/" target="_blank"><b style="color:#FF6347; font-weight:normal">Byeongjun Park</b></a>,
@@ -162,7 +162,7 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            We present <strong>Diffusion Model Patching (DMP)</strong>, a simple method to boost the performance of pre-trained diffusion models that have already reached convergence, with a negligible increase in parameters. DMP inserts a small, learnable set of prompts into the model's input space while keeping the original model frozen. The effectiveness of DMP is not merely due to the addition of parameters but stems from its dynamic gating mechanism, which selects and combines a subset of learnable prompts at every step of the generative process (i.e., reverse denoising steps). This strategy, which we term "mixture-of-prompts", enables the model to draw on the distinct expertise of each prompt, essentially "patching" the model's functionality at every step with minimal yet specialized parameters. Uniquely, DMP enhances the model by further training on the same dataset on which it was originally trained, even in a scenario where significant improvements are typically not expected due to model convergence. Experiments show that DMP significantly enhances the converged FID of DiT-L/2 on FFHQ 256X256 by 10.38%, achieved with only a 1.43% parameter increase and 50K additional training iterations.
+            We present <strong>Diffusion Model Patching (DMP)</strong>, a simple method to boost the performance of pre-trained diffusion models that have already reached convergence, with a negligible increase in parameters. DMP inserts a small, learnable set of prompts into the model's input space while keeping the original model frozen. The effectiveness of DMP is not merely due to the addition of parameters but stems from its dynamic gating mechanism, which selects and combines a subset of learnable prompts at every timestep (i.e., reverse denoising steps). This strategy, which we term "mixture-of-prompts", enables the model to draw on the distinct expertise of each prompt, essentially "patching" the model's functionality at every timestep with minimal yet specialized parameters. Uniquely, DMP enhances the model by further training on the original dataset already used for pre-training, even in a scenario where significant improvements are typically not expected due to model convergence. Notably, DMP significantly enhances the FID of converged DiT-L/2 by 10.38% on FFHQ, achieved with only a 1.43% parameter increase and 50K additional training iterations.
           </p>
         </div>
       </div>
@@ -200,12 +200,11 @@
         <div class="hero-body">
           <img src="static/images/main_table.png" alt="Main Table"/>
           <h2 class="subtitle has-text-centered">
-          <strong>Patching the pre-trained DiT models with DMP.</strong>
+          <strong>Evaluating pre-trained diffusion models with different further training methods.</strong>
+          Importantly, we use the same dataset as in the pre-training for further training.
           We set two baselines for comparison:
-          (1) conventional fine-tuning to update the model parameters.
+          (1) full fine-tuning to update the entire model parameters.
           (2) naive prompt tuning.
-          Note that we use the same dataset as in the pre-training.
-          Image Resolution is 256 X 256.
           </h2>
         </div>
       </div>
@@ -353,11 +352,11 @@
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
     <pre><code>
-@article{ham2024diffusion,
+@inproceedings{ham2024diffusion,
   title={Diffusion Model Patching via Mixture-of-Prompts},
   author={Ham, Seokil and Woo, Sangmin and Kim, Jin-Young and Go, Hyojun and Park, Byeongjun and Kim, Changick},
-  journal={arXiv preprint arXiv:2405.17825},
-  year={2024}
+  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+  year={2025}
 }
     </code></pre>
   </div>
